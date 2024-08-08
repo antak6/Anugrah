@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hammerspace-pod
+  namespace: default
+spec:
+  containers:
+  - name: hammerspace-container
+    image: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/alpine:1.0.0
+    volumeMounts:
+    - name: hammerspace-storage
+      mountPath: /data
+    command: [ "sh", "-c", "sleep infinity"] #[ "ls", "-al", "/data" ]
+  volumes:
+    - name: hammerspace-storage
+      persistentVolumeClaim:
+        claimName: hammerspace-test-pvc
+  imagePullSecrets:
+    - name: image-pull-secret        
