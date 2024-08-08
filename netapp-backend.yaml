@@ -1,0 +1,20 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: backend-tbc-ontap-nas
+  namespace: netapp
+spec:
+  version: 1
+  storageDriverName: ontap-nas-economy
+  managementLIF: 10.230.132.179
+  dataLIF: 172.23.246.31
+  svm: ppseelm-nns027
+  aggregate: ag_itseelm_sn0102_SL2  
+  credentials:
+    name: netapp-secret
+  defaults:
+    spaceReserve: none
+    snapshotPolicy: SL2-snap
+    splitOnClone: false
+    encrypt: false
+
