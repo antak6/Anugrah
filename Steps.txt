@@ -1,0 +1,7 @@
+Create a PVC
+Create a POD
+Exec into POD and write some data.
+Create Volume Snapshot of the POD.
+Exec into POD and delete the written data.
+Create restore POD using Snapshot of the POD.
+Exec into restore POD and check for files.
