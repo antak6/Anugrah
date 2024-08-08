@@ -1,0 +1,56 @@
+# values.yaml
+
+namespace: netapp
+
+trident:
+  install: true
+  namespace: netapp
+  image: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/netapp/trident-operator:24.02.0
+
+backendConfig:
+  name: backend-tbc-ontap-nas
+  namespace: netapp
+  storageDriverName: ontap-nas
+  managementLIF: 10.230.132.179    #You have to input here
+  dataLIF: 172.23.246.31         #You have to input here
+  svm: ppseelm-nns027
+  secretName: netapp-credentials
+
+pvc:
+  name: pvc-netapp                 #You have to input here your desired PVC Name
+  namespace: netapp
+  storageClassName: netapp-trident
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi                 #You have to input here your required vol size
+
+snapshotClass:
+  name: csi-snapclass
+  driver: csi.trident.netapp.io
+  deletionPolicy: Delete
+
+volumeSnapshot:
+  name: pvc-netapp-snapshot        #You may input here your desired snapshot name
+  namespace: netapp
+  volumeSnapshotClassName: csi-snapclass
+  sourcePVC: pvc-netapp
+
+restoredPVC:
+  name: pvc-netapp-restore         #You may input here your desired restore name
+  namespace: netapp
+  storageClassName: netapp-trident
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  dataSource:
+    name: pvc-netapp-snapshot
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+
+secrets:
+  username: b3JiaXQ=
+  password: T3JiaXRAMTIz  
