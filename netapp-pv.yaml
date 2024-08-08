@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: netapp-pv
+spec:
+ capacity:
+   storage: 10Gi
+ accessModes:
+   - ReadWriteMany  
+ persistentVolumeReclaimPolicy: Retain
+ storageClassName: netapp-trident
+ csi:
+   driver: csi.trident.netapp.io
+   volumeHandle: "orbit_netapp_test"  
+   fsType: ext4
