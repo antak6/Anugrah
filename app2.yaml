@@ -1,0 +1,19 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: netapp-another-pod
+  namespace: netapp
+spec:
+  containers:
+    - name: netapp-another-container
+      image: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/alpine:1.0.0
+      volumeMounts:
+      - mountPath: "/tmp/anugrah"
+        name: netapp-anugrahtests
+      command: [ "ls", "-al", "/tmp" ]
+  volumes:
+    - name: netapp-anugrahtests
+      persistentVolumeClaim:
+        claimName: netapp-test2-pvc
+  imagePullSecrets:
+    - name: image-pull-secret
