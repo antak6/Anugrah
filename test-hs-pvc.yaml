@@ -1,0 +1,97 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: hs-snapshots
+  namespace: kube-system
+driver: com.hammerspace.csi
+deletionPolicy: Delete
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-hammerspace
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: hs-storage
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: my-app-pvc-hammerspace
+spec:
+  containers:
+    - name: my-app-pvc-hammerspace
+      image: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/alpine:1.0.0
+      volumeMounts:
+      - mountPath: "/data"
+        name: data-dir
+      command: [ "sh", "-c", "sleep infinity"] #[ "ls", "-al", "/data" ]
+  volumes:
+    - name: data-dir
+      persistentVolumeClaim:
+        claimName: pvc-hammerspace
+  imagePullSecrets:
+    - name: image-pull-secret
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: snap-hs
+spec:
+  volumeSnapshotClassName: hs-snapshots
+  source:
+    persistentVolumeClaimName: pvc-hammerspace   
+--- 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csi-do-test-pvc-restore
+spec:
+  dataSource:
+    name: snap-hs
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-from-snap
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  dataSource:
+    name: snap-hs
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io   
+##---
+##kind: Pod
+##apiVersion: v1
+##metadata:
+##  name: app-pvc-from-snap
+##spec:
+##  containers:
+##    - name: app-pvc-from-snap
+##      image: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/alpine:1.0.0
+##      volumeMounts:
+##      - mountPath: "/data"
+##        name: data-dir
+##      command: [ "sh", "-c", "sleep infinity"] #[ "ls", "-al", "/data" ]
+##  volumes:
+##    - name: data-dir
+##      persistentVolumeClaim:
+##        claimName: pvc-from-snap
+##  imagePullSecrets:
+##    - name: image-pull-secret    
