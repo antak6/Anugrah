@@ -1,0 +1,9 @@
+apiVersion: rubrik.com/v1
+kind: SLABinding
+metadata:
+ name: netapp-rubrik
+ namespace: rubrik-kupr
+spec:
+ slaName: DC8-SL1-DAILY-1200-1800-CET-30D-RUBRIK2-30D
+ bound: true
+ deletionPolicy: Delete
