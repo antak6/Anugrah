@@ -1,0 +1,14 @@
+apiVersion: apps.kupr.rubrik.com/v1alpha1
+kind: ProtectionSet
+metadata:
+  name: netapp-protection-set
+  namespace: rubrik-kupr
+spec:
+  filter:
+    excludes: []
+    includes:
+      - group: ProtectionSet
+        name: netapp
+        resource: namespaces
+  slaDomainUuid: 3565a55e-a6a1-566f-872b-931a43bd3052
+#  type: FullProtection # Replace with the appropriate type value
