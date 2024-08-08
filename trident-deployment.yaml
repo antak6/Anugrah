@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trident-controller
+  namespace: {{ .Values.trident.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trident
+  template:
+    metadata:
+      labels:
+        app: trident
+    spec:
+      containers:
+        - name: trident-main
+          image: {{ .Values.trident.image }}
+          ports:
+            - containerPort: 8000
