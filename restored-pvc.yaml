@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ .Values.restoredPVC.name }}"
+  namespace: "{{ .Values.restoredPVC.namespace }}"
+spec:
+  accessModes:
+    - "{{ .Values.restoredPVC.accessModes | join ',' }}"
+  resources:
+    requests:
+      storage: "{{ .Values.restoredPVC.resources.requests.storage }}"
+  storageClassName: "{{ .Values.restoredPVC.storageClassName }}"
+  dataSource:
+    name: "{{ .Values.restoredPVC.dataSource.name }}"
+    kind: "{{ .Values.restoredPVC.dataSource.kind }}"
+    apiGroup: "{{ .Values.restoredPVC.dataSource.apiGroup }}"
+
