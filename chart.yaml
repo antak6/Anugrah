@@ -1,0 +1,5 @@
+apiVersion: v2
+name: trident
+description: A Helm chart for the Trident operator
+version: 100.2406.0
+appVersion: "24.06.0"
