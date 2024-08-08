@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: netapp-pv-pod
+ namespace: netapp  
+spec:
+ volumes:
+   - name: orbit-netapp-test
+     persistentVolumeClaim:
+      claimName: netapp-pvc
+ containers:
+   - name: orbit-pv-container
+     image: nginx
+     ports:
+      - containerPort: 80
+        name: "http-server"
+     volumeMounts:
+      - mountPath: "/usr/share/nginx/html"
+        name: orbit-netapp-test
