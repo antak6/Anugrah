@@ -1,0 +1,9 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: {{ .Values.volumeSnapshot.name }}
+  namespace: {{ .Values.volumeSnapshot.namespace }}
+spec:
+  volumeSnapshotClassName: {{ .Values.volumeSnapshot.volumeSnapshotClassName }}
+  source:
+    persistentVolumeClaimName: {{ .Values.volumeSnapshot.sourcePVC }}
