@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restore-job
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - name: restore-container
+        image: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/alpine:1.0.0
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "Restoring data from snapshot"
+            cp -a /source/* /target/
+        volumeMounts:
+        - name: source
+          mountPath: /source
+        - name: target
+          mountPath: /target
+      volumes:
+      - name: source
+        persistentVolumeClaim:
+          claimName: hammerspace-test-pvc
+      - name: target
+        persistentVolumeClaim:
+          claimName: restore-pvc
+      restartPolicy: Never
