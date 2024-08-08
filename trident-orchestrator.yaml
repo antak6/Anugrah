@@ -1,0 +1,11 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentOrchestrator
+metadata:
+  name: trident
+spec:
+  debug: true
+  namespace: netapp
+  autosupportImage: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/netapp/trident-autosupport:24.02
+  tridentImage: artifactory.build.ingka.ikea.com/cloudenablement-docker-dev-local/orbit/netapp/trident:24.02.0
+  imagePullSecrets:
+  - image-pull-secret
