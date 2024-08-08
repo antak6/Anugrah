@@ -1,0 +1,18 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: {{ .Values.backendConfig.name }}
+  namespace: {{ .Values.backendConfig.namespace }}
+spec:
+  version: 1
+  storageDriverName: {{ .Values.backendConfig.storageDriverName }}
+  managementLIF: {{ .Values.backendConfig.managementLIF }}
+  dataLIF: {{ .Values.backendConfig.dataLIF }}
+  svm: {{ .Values.backendConfig.svm }}
+  credentials:
+    name: {{ .Values.backendConfig.secretName }}
+  defaults:
+    spaceReserve: none
+    snapshotPolicy: default
+    snapshotReserve: 5
+    exportPolicy: default
